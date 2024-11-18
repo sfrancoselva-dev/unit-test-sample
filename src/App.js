@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect, useMemo } from "react";
+import Users from "./Users/Users.comp";
+import Search from "./Search/Search.comp";
+import "./App.css";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/users`
+      );
+      const data = await response.json();
+      setUsers(data);
+    };
+    fetchUsers();
+  }, []);
+
+  const filteredUsers = useMemo(
+    () =>
+      users.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [users, searchTerm]
+  );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search
+        placeholder="search users"
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+      <Users users={filteredUsers} />
     </div>
   );
 }
