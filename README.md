@@ -5,6 +5,7 @@ This project is a simple user search feature and showcases how to write and run 
 ## Setup
 
 git clone https://github.com/sfrancoselva-dev/unit-test-sample.git
+
 cd unit-test-sample
 
 ## Available Scripts
